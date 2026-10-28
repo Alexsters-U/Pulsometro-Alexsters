@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "style": "minecraft-pixel",
+  "visualOnly": true,
+  "note": "Visual thresholds only, not medical classifications. PNGs are static; heartbeat, glow and shake are runtime effects.",
+  "phases": [
+    {
+      "id": "base",
+      "label": "Base",
+      "minBpm": 0,
+      "maxBpm": 89,
+      "asset": "/assets/hearts/phases/base-v1.png",
+      "color": "#ef1d25"
+    },
+    {
+      "id": "elevated",
+      "label": "Elevado",
+      "minBpm": 90,
+      "maxBpm": 109,
+      "asset": "/assets/hearts/phases/elevated-v1.png",
+      "color": "#ffd447"
+    },
+    {
+      "id": "accelerated",
+      "label": "Acelerado",
+      "minBpm": 110,
+      "maxBpm": 139,
+      "asset": "/assets/hearts/phases/accelerated-v1.png",
+      "color": "#ff8a1e"
+    },
+    {
+      "id": "very-fast",
+      "label": "Muy acelerado",
+      "minBpm": 140,
+      "maxBpm": 260,
+      "asset": "/assets/hearts/phases/natanael-totem-idle-v1.png",
+      "activationAsset": "/assets/hearts/phases/natanael-totem-open-v1.png",
+      "color": "#ff303e"
+    }
+  ]
+}

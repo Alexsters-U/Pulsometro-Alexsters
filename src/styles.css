@@ -1,0 +1,162 @@
+@font-face {
+  font-family: "VT323";
+  src: url("/assets/fonts/VT323-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Rajdhani";
+  src: url("/assets/fonts/Rajdhani-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+}
+
+:root {
+  color: #f4f7fb;
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: transparent;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+.overlayRoot {
+  --pulse-color: #f8d447;
+  --pulse-glow: #8fd6ff;
+  --shake: 0px;
+  --heart-peak: 1.12;
+  --beat-duration: 1000ms;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 0;
+  color: var(--pulse-color);
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  backdrop-filter: none !important;
+}
+
+.overlayRoot.panel {
+  border: 2px solid rgba(255, 255, 255, 0.18) !important;
+  border-radius: 8px !important;
+  background: rgba(18, 13, 24, 0.66) !important;
+  backdrop-filter: blur(8px) !important;
+  padding: 18px 22px !important;
+}
+
+.overlayRoot.transparent {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+.bpmGroup {
+  display: grid;
+  align-content: center;
+  gap: 0;
+  width: 128px;
+  flex: 0 0 128px;
+}
+
+.bpmNumber {
+  display: block;
+  font-family: "Rajdhani", "Segoe UI", sans-serif;
+  font-size: 76px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--pulse-color);
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 2px 1px #111;
+  animation: counterBeat var(--beat-duration) ease-in-out infinite;
+  transform-origin: left center;
+}
+
+.bpmUnit { font-family: "Rajdhani", sans-serif; font-size: 13px; font-weight: 700; color: #edf2f5; line-height: 1; opacity: .8; text-shadow: 0 1px 2px #111; }
+
+.bpmLabel {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin-top: 7px;
+  text-shadow: 0 1px 2px #000;
+  opacity: 0.9;
+}
+
+.minecraft .bpmNumber, .hardcore .bpmNumber {
+  font-family: "VT323", monospace;
+  font-weight: 400;
+  font-size: 80px;
+  line-height: .95;
+  text-shadow: 3px 3px 0 #35220e;
+  -webkit-text-stroke: .5px #28190f;
+}
+
+.hardcore .bpmNumber { text-shadow: 3px 3px 0 #140e19, 0 0 6px #68182b; -webkit-text-stroke-color: #130f18; }
+
+.neon .bpmNumber {
+  text-shadow: 0 0 7px var(--pulse-glow), 0 2px 1px #14121c;
+}
+
+.crystal .bpmNumber {
+  text-shadow: 0 1px 0 #fff6, 1px 3px 0 #401521, 0 0 4px #ff7c7c40;
+}
+
+@keyframes counterBeat {
+  0%, 65%, 100% { transform: translate(0,0) scale(1); }
+  16% { transform: translate(var(--shake),calc(var(--shake) * -1)) scale(1.015); }
+  32% { transform: translate(calc(var(--shake) * -.5),calc(var(--shake) * .5)) scale(1); }
+  45% { transform: translate(0,0) scale(1.005); }
+}
+
+.overlayViewport { display: inline-flex; padding: 40px; }
+.overlayRoot[data-status="idle"] .bpmNumber, .overlayRoot[data-status="stale"] .bpmNumber, .overlayRoot[data-status="error"] .bpmNumber { animation: none; }
+@media (prefers-reduced-motion: reduce) { .bpmNumber { animation: none; } }
+.pulseIcon { position: relative; width: 124px; height: 124px; display: grid; place-items: center; flex: 0 0 124px; isolation: isolate; }
+.heartBeat { position: relative; width: 124px; height: 124px; display: grid; place-items: center; transform-origin: center; }
+.phaseSprite { width: 156px; height: 156px; max-width: none; object-fit: contain; position: absolute; pointer-events: none; }
+.pixelated .phaseSprite { image-rendering: pixelated; }
+.totemSprite { z-index: 2; }
+.totemPopping { animation: totemPop 1400ms cubic-bezier(.2,.7,.25,1) both; }
+.phaseSprite.popcatTotem { width: 136px; height: 136px; transform-origin: 50% 75%; }
+.totemBurst { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+.totemRing { position: absolute; left: 50%; top: 50%; width: 52px; height: 52px; border: 4px solid #ffe476; border-radius: 50%; animation: totemRing 700ms ease-out both; }
+.totemBurst i { position: absolute; left: 50%; top: 50%; width: 6px; height: 6px; background: #ffd75c; box-shadow: 0 0 6px #ffdf6a; animation: totemParticle 1000ms ease-out both; animation-delay: var(--delay); }
+.totemBurst i:nth-child(even) { background: #61ef86; box-shadow: 0 0 6px #55e893; }
+@keyframes totemPop {
+  0% { transform: translateY(10px) rotate(-8deg) scale(.2,.14); filter: brightness(1.4); opacity: 0; }
+  22% { transform: translateY(-6px) rotate(6deg) scale(1.12,1.16); filter: brightness(1.25) drop-shadow(0 0 7px #ffe477); opacity: 1; }
+  46% { transform: translateY(0) rotate(-3deg) scale(.97,1.02); filter: brightness(1.1); }
+  70% { transform: translateY(0) rotate(1deg) scale(1.02); }
+  100% { transform: translateY(0) rotate(0) scale(1); filter: none; opacity: 1; }
+}
+@keyframes totemRing {
+  0% { transform: translate(-50%,-50%) scale(.2); opacity: .9; }
+  100% { transform: translate(-50%,-50%) scale(2.5); opacity: 0; }
+}
+@keyframes totemParticle {
+  0% { transform: translate(-50%,-50%) scale(1.4); opacity: 1; }
+  100% { transform: translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) rotate(100deg) scale(.1); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .totemPopping { animation: none; }
+  .totemBurst { display: none; }
+}

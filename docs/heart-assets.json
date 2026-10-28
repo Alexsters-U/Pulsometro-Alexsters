@@ -1,0 +1,30 @@
+{
+  "generator": "Built-in image_gen",
+  "background": "transparent",
+  "assets": [
+    {
+      "id": "minecraft-classic",
+      "file": "/assets/hearts/minecraft-classic-v1.png",
+      "label": "Minecraft clasico",
+      "prompt": "Use case: stylized-concept. Asset type: a production-ready isolated game HUD heart sprite for a livestream heart-rate overlay, displayed next to separate BPM numerals. Create exactly ONE improved classic Minecraft-inspired pixel-art heart. Genuine transparent background with alpha, no background plane, no checkerboard drawn into the artwork. Symmetric familiar heart silhouette: two rounded stair-step lobes, deep centered notch, broad upper body tapering cleanly to ONE centered bottom pixel tip; no asymmetry, missing cells or sideways protrusions. Flat straight-on view, square canvas, center the full heart with 14 percent transparent margin on every side. Strict chunky aligned square pixels with a consistent approximately 16 by 16 logical pixel grid, hard stair-step edges, no antialiasing or soft blur. Compact dark burgundy nearly black pixel outline 1 logical pixel thick; rich crimson and bright red fill, a small pale red square highlight at upper left, darker wine-red bottom/right pixel shading for clean retro volume. Extremely legible at 64px. No text, numerals, BPM, symbols, UI frame, extra hearts, particles, lettering, logo, watermark, perspective, rounded smooth vector edges, or cast shadow outside the heart. This should look like a carefully polished survival-game health icon, not a sketch. Output square PNG, ideally 1024x1024, with actual transparency."
+    },
+    {
+      "id": "minecraft-hardcore",
+      "file": "/assets/hearts/minecraft-hardcore-v1.png",
+      "label": "Minecraft hardcore",
+      "prompt": "Use case: stylized-concept. Asset type: production-ready isolated pixel game heart sprite for a livestream BPM overlay. Create exactly ONE dark hardcore variation of a Minecraft-inspired HUD heart. Actual transparent background with alpha, no opaque backdrop and no rendered checkerboard. Perfectly symmetric stair-step heart silhouette, two upper lobes, a clear central notch, single centered bottom tip. Square image, front-on, centered, transparent safe margin 14 percent all around. True chunky pixel art on a regular 16 by 16 or 20 by 20 logical pixel grid, sharp square cells only, no blurry edges. Heart body saturated scarlet red with deep maroon pixel shadows, dramatic compact black and charcoal stepped outline like dark obsidian armor, a subtle tiny hot red highlight along its inner upper edge. Add only a few angular dark internal pixel facets suggesting a more intense hardcore mode; preserve the clear solid heart silhouette, do not add a face, eyes, spikes, skull or broken-heart crack. Strong readability at 64px and recognizable on both dark gameplay and bright gameplay. No text, numbers, BPM, branding, watermark, multiple hearts, decorative card, environmental scene, particles or external glow. One finished sprite asset, ideally 1024x1024 square transparent PNG."
+    },
+    {
+      "id": "neon-circuit",
+      "file": "/assets/hearts/neon-circuit-v1.png",
+      "label": "Neon circuito",
+      "prompt": "Use case: stylized-concept. Asset type: transparent HUD heart asset for a livestream heart-rate overlay. Exactly ONE front-facing heart, centered on a square canvas with 18 percent fully transparent safe margin on every side. Genuine transparent alpha background: absolutely no background plane or checkerboard texture. A polished futuristic heart icon made of thick hot pink and red luminous tubing with small cyan-white highlights, a clear symmetric heart silhouette, clean deep center notch and tapered central bottom tip. Controlled neon bloom tightly hugging the edges, not a huge cloud; dark red translucent glass core with restrained geometric circuit accents inside. Bold primary shape, few details, immediately legible at 64 to 100 pixels. Sophisticated game HUD graphic, not a logo mockup and not a scene. Full silhouette and glow fully inside the canvas. No numbers, BPM, ECG line, text, watermark, frame, base, pedestal, particles, decorative floating objects or extra hearts. Ideally 1024x1024 square PNG with real transparency."
+    },
+    {
+      "id": "ruby-crystal",
+      "file": "/assets/hearts/ruby-crystal-v1.png",
+      "label": "Cristal rubi",
+      "prompt": "Use case: stylized-concept. Asset type: isolated game UI heart asset on transparent background for a livestream BPM overlay. Create exactly ONE polished ruby-crystal heart icon, front-facing and almost orthographic, perfectly centered on a square canvas with 16 percent transparent safe margin on all sides. Actual transparent alpha backdrop, no background plane, no checkerboard artwork. Clear symmetric two-lobed heart silhouette with a pronounced central notch and a centered tapered bottom tip. Vivid ruby red gemstone with just a small number of broad low-poly facets, a crisp warm pink highlight at the upper left, deep crimson and wine-red facets bottom/right, subtle believable glassy internal depth. Bold attractive stylized 3D game inventory icon, not photorealistic jewelry; remains easy to recognize at 64px. Short bevels, no gold metal setting, no chain, no surrounding jewels. No cast shadow, floor, pedestal, vignette, particles, flare stars, text, numbers, BPM, watermark, extra objects or extra hearts. Full silhouette never cropped. Ideally 1024x1024 square transparent PNG."
+    }
+  ]
+}

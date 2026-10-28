@@ -1,0 +1,37 @@
+services:
+  pulsometro:
+    build: .
+    restart: unless-stopped
+    init: true
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=16m
+    pids_limit: 128
+    mem_limit: 256m
+    stop_grace_period: 15s
+    ports:
+      - "127.0.0.1:${APP_PORT:-3000}:3000"
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 3000
+      PUBLIC_ORIGIN: ${PUBLIC_ORIGIN:?Configura PUBLIC_ORIGIN con el dominio HTTPS}
+      ADMIN_TOKEN: ${ADMIN_TOKEN:?Configura ADMIN_TOKEN}
+      INGEST_TOKEN: ${INGEST_TOKEN:?Configura INGEST_TOKEN}
+      OVERLAY_TOKEN: ${OVERLAY_TOKEN:?Configura OVERLAY_TOKEN}
+      PULSE_STALE_MS: ${PULSE_STALE_MS:-10000}
+      DATA_DIR: /app/data
+    volumes:
+      - pulse-data:/app/data
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  pulse-data:

@@ -1,0 +1,36 @@
+{
+  "sprite": {
+    "generator": "Built-in image_gen",
+    "name": "Natanael",
+    "baseReference": "docs/assets/popcat-reference.png",
+    "photoReference": "Private owner-provided Natanael photo; original reference not distributed",
+    "palette": {
+      "fur": [
+        "#939391",
+        "#8b8b8b",
+        "#4b4948",
+        "#5c5759"
+      ],
+      "eyes": "#d3cb95",
+      "pendantLetter": "N"
+    },
+    "frames": {
+      "idle": {
+        "file": "public/assets/hearts/phases/natanael-totem-idle-v1.png",
+        "prompt": "Use case: precise-object-edit / identity-preserve. Image 1 is the CLOSED-MOUTH original Popcat totem sprite to edit. Image 2 is its newly personalized OPEN-MOUTH NATANAEL counterpart, provided as the exact fur-palette, eye-color and N-pendant reference. Make image 1 match image 2's customization while keeping the mouth CLOSED. Preserve image 1's exact external silhouette, canvas, transparent margins, head angle, ear positions, compact chest, tucked paws and collar location; do not zoom, crop or recenter. Recolor every white/cream and brown FUR patch to GRAY with user HEX colors #939391, #8b8b8b, #5c5759 and #4b4948, matching image 2: gray muzzle, gray chin, gray chest and gray paws, no white bib or brown fur patches. Keep the pixel-art shapes and intentional limited-palette shading. Eyes in the existing positions must have clearly visible pale yellow-gold irises #d3cb95, dark narrow pupils and small glints, matching image 2. Small charcoal gray cat nose, soft muted pink inner ears; friendly CLOSED-mouth cat expression. Retain the gold collar and replace its green gemstone with the SAME gold medallion and a bold dark upright block-pixel capital letter as image 2. Text verbatim: \"N\". Exactly ONE readable N, no emerald stone, no other letters. Match image 2's pendant appearance and fur tones so the two animation frames form the same cat. Do not copy the open mouth from image 2. Genuine transparent alpha backdrop, no opaque background, no drawn checkerboard, no lighting aura, no external shadows, no text outside the single N, no new objects. One complete closed-mouth Natanael sprite."
+      },
+      "activation": {
+        "file": "public/assets/hearts/phases/natanael-totem-open-v1.png",
+        "prompt": "Use case: precise-object-edit / identity-preserve. Image 1 is the existing OPEN-MOUTH Popcat pixel-art totem sprite to EDIT. Image 2 is the owner's real gray cat NATANAEL, provided ONLY as a fur-color, eye-color and nose reference. Make the existing sprite an homage to Natanael. Preserve image 1's EXACT pose, silhouette, large open mouth, canvas size, ear positions, proportions, chest, tucked paws and collar placement. Keep crisp chunky pixel art, not a realistic animal photograph. Change ONLY fur palette, eye irises, nose color and pendant face. FUR: recolor ALL white/cream and brown fur areas to neutral medium/dark GRAY using these user-specified primary HEX tones: #939391 highlights, #8b8b8b midtone, #5c5759 shadow, #4b4948 deep shadow. Face, muzzle, cheeks, chest and paws must ALSO be gray, with NO white bib, white muzzle or brown patches. Suggest Natanael's subtle darker gray fur shading while retaining the original pixel clusters; no realistic fur noise. Outermost contour can remain darker charcoal for visibility. EYES: both eyes visibly have pale yellow-gold irises in exactly #d3cb95, small dark vertical pupils and tiny restrained glints, matching Natanael's eyes. Keep their existing placement and upward-looking expression. NOSE: small charcoal gray rather than vivid pink, like the real cat; preserve soft pink ear interiors and dark burgundy/pink open-mouth interior. COLLAR: preserve the GOLD collar, but REPLACE the green emerald on its pendant with a flat warm GOLD medallion containing ONE bold legible engraved dark charcoal capital letter. Text verbatim: \"N\". Make N a simple crisp upright block-pixel uppercase N with two vertical strokes and a diagonal connecting them; no other text, no green gemstone and no extra letters. The N should be readable on a small HUD icon. Keep genuine transparent alpha background and every safe margin; do not add a background, checkerboard texture, cast shadow, aura, particles or border. Exactly ONE complete open-mouth Natanael charm sprite."
+      }
+    }
+  },
+  "sound": {
+    "file": "public/assets/audio/totem-use.ogg",
+    "source": "Minecraft game asset by Mojang/Microsoft; not generated audio",
+    "assetKey": "minecraft/sounds/item/totem/use_totem.ogg",
+    "assetIndex": "https://piston-meta.mojang.com/v1/packages/e787e8afd149a4cefa89d341b91f5aed8f5d93a0/34.json",
+    "download": "https://resources.download.minecraft.net/f3/f3fa2f7ac95f0bd8419b9638b2e6b289265e4b18",
+    "sha1": "f3fa2f7ac95f0bd8419b9638b2e6b289265e4b18"
+  }
+}
