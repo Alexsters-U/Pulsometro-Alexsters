@@ -47,8 +47,11 @@ de las ultimas 40 variaciones observadas; no es un electrocardiograma.
 La biblioteca contiene cuatro plantillas y hasta 24 disenos propios guardados
 en este navegador. Los archivos JSON permiten exportarlos e importarlos entre
 equipos. Solo **Guardar diseno** publica el diseno activo hacia OBS.
-La vista **Conexiones** muestra el destino del emisor, la URL de lectura oculta
-y una comprobacion real de disponibilidad del servidor.
+La vista **Conexiones** muestra el destino del emisor, la URL de lectura oculta,
+la bateria de la banda, cuantos overlays estan abiertos (y si OBS los tiene en programa)
+y una comprobacion real de disponibilidad del servidor. **Mostrar codigo QR** genera un
+codigo de un solo uso (2 minutos) para que la app reciba la clave de envio sin copiarla.
+No lo muestres en directo: quien lo escanee primero recibe la clave.
 
 ## Preparar produccion
 
@@ -75,6 +78,10 @@ Un lienzo de fuente de 600 x 240 deja espacio para el brillo y la vibracion.
 El enlace incluye una clave de lectura; no permite enviar BPM ni editar disenos.
 Los cambios guardados se propagan a OBS sin recargarlo ni compartir localStorage.
 Si no llegan lecturas durante 10 segundos, el overlay muestra `--`.
+Dentro de OBS el overlay informa al servidor si su escena esta en programa; la app lo
+muestra como "En directo en OBS". OBS solo avisa los cambios de escena: tras abrir la
+fuente aparece "escena sin confirmar" hasta el primer cambio. Para saber si OBS esta
+transmitiendo, da a la fuente el permiso "Acceso de lectura al estado de OBS" (Read access to OBS status information).
 
 ## Temas y movimiento
 

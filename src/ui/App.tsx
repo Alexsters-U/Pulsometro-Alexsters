@@ -18,6 +18,7 @@ import {
   RotateCcw,
   Save,
   ShieldCheck,
+  Smartphone,
   Undo2,
   Upload,
   X,
@@ -40,6 +41,7 @@ import { loadLegacyDesign, saveDesign } from "../designs/storage";
 import { exportDesign, loadLibrary, persistLibrary } from "../designs/library";
 import { sameDesign, useDesignHistory } from "../designs/useDesignHistory";
 import { useLiveFeed } from "../pulse/useLiveFeed";
+import { obsStudio, useObsPresence } from "../pulse/useObsPresence";
 import { useSimulator } from "../pulse/useSimulator";
 import { AppearanceSwitch, useAppearance, type Appearance } from "./appearance";
 import { Overlay } from "./Overlay";
@@ -49,16 +51,17 @@ import { StudioLibrary } from "./StudioLibrary";
 import { StudioConnections } from "./StudioConnections";
 
 export function App() {
-  return window.location.pathname === "/overlay" ? (
-    <OverlayPage />
-  ) : (
-    <EditorSession />
-  );
+  if (window.location.pathname === "/overlay") return <OverlayPage />;
+  if (window.location.pathname === "/pair") return <PairPage />;
+  return <EditorSession />;
 }
+
+const runningInObs = obsStudio() !== null;
 
 function OverlayPage() {
   const token = new URLSearchParams(window.location.search).get("token") ?? "";
-  const feed = useLiveFeed(token);
+  const feed = useLiveFeed(token, runningInObs ? "obs" : undefined);
+  useObsPresence(token, feed.clientId);
   return (
     <main className="overlayViewport">
       <Overlay
@@ -69,6 +72,55 @@ function OverlayPage() {
           feed.connection === "error" ? "error" : (feed.pulse?.status ?? "idle")
         }
       />
+    </main>
+  );
+}
+
+// Destino del QR cuando se escanea con la camara del telefono en lugar de la app.
+// El codigo viaja en el fragmento, que el navegador no envia al servidor.
+function PairPage() {
+  const [appearance, setAppearance] = useAppearance();
+  const code = new URLSearchParams(window.location.hash.slice(1)).get("code") ?? "";
+  const valid = /^[A-Za-z0-9_-]{20,128}$/.test(code);
+  const appLink = `alexsters-pulse://pair?${new URLSearchParams({ origin: window.location.origin, code })}`;
+  return (
+    <main className="studioShell loginShell" data-appearance={appearance}>
+      <header className="loginTopbar">
+        <a href="/" className="studioBrand">
+          <span className="brandMark">
+            <HeartPulse size={23} />
+          </span>
+          <span>
+            Alexsters <b>Pulse</b>
+          </span>
+        </a>
+        <AppearanceSwitch value={appearance} onChange={setAppearance} />
+      </header>
+      <section className="loginForm pairPage">
+        <span className="sectionEyebrow">VINCULAR EMISOR</span>
+        <h1>Abrir en la app</h1>
+        {valid ? (
+          <>
+            <p className="pairText">
+              Abre este enlace en el telefono que tiene Alexsters Pulse. La app
+              te pedira confirmar el servidor antes de guardar la clave de envio.
+            </p>
+            <a className="primaryButton fullWidth" href={appLink}>
+              <Smartphone size={17} />
+              Abrir en Alexsters Pulse
+            </a>
+            <p className="pairText muted">
+              El codigo caduca a los 2 minutos y sirve una sola vez.
+            </p>
+          </>
+        ) : (
+          <p className="loginMessage" role="status">
+            Este enlace no contiene un codigo valido. Genera uno nuevo en
+            Conexiones.
+          </p>
+        )}
+      </section>
+      <footer className="loginFooter">Pulsometro Alexsters</footer>
     </main>
   );
 }
@@ -673,6 +725,9 @@ function Workspace({
               overlayBackground={saved?.background ?? "transparent"}
               overlayUrl={overlayUrl}
               pulse={feed.pulse}
+              viewers={feed.viewers}
+              pairing={feed.pairing}
+              notify={notify}
               connection={feed.connection}
               copy={copy}
               openOverlay={overlayUrl}

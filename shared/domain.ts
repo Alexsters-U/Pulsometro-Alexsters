@@ -53,6 +53,8 @@ export const pulseInputSchema = z.object({
   bpm: z.number().int().min(25).max(260),
   device: z.string().min(1).max(80),
   measuredAt: z.string().datetime({ offset: true }).optional(),
+  // Porcentaje del Battery Service de la banda; ausente si la banda no lo expone.
+  battery: z.number().int().min(0).max(100).optional(),
 });
 
 export const pulseSnapshotSchema = z.object({
@@ -61,5 +63,41 @@ export const pulseSnapshotSchema = z.object({
   receivedAt: z.string().nullable(),
   status: z.enum(["idle", "connected", "stale"]),
   staleAfterMs: z.number().positive(),
+  battery: z.number().int().min(0).max(100).nullable().optional(),
 });
 export type PulseSnapshot = z.infer<typeof pulseSnapshotSchema>;
+
+// Quien esta leyendo el canal. "live" solo cuenta fuentes que OBS informo como activas en programa.
+export const viewersSchema = z.object({
+  overlays: z.number().int().min(0),
+  obs: z.number().int().min(0),
+  live: z.number().int().min(0),
+  streaming: z.boolean().nullable(),
+  editors: z.number().int().min(0),
+});
+export type Viewers = z.infer<typeof viewersSchema>;
+
+export const presenceSchema = z.object({
+  id: z.string().min(1).max(64),
+  active: z.boolean().nullable().optional(),
+  visible: z.boolean().nullable().optional(),
+  streaming: z.boolean().nullable().optional(),
+});
+
+export const pairRequestSchema = z.object({
+  code: z.string().regex(/^[A-Za-z0-9_-]{20,128}$/),
+  device: z.string().min(1).max(80).optional(),
+});
+
+export const pairingSchema = z.object({
+  code: z.string(),
+  link: z.string().url(),
+  expiresAt: z.string(),
+});
+export type Pairing = z.infer<typeof pairingSchema>;
+
+export const pairingEventSchema = z.object({
+  status: z.enum(["completed", "cancelled"]),
+  device: z.string().nullable(),
+});
+export type PairingEvent = z.infer<typeof pairingEventSchema>;

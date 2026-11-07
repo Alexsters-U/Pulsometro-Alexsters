@@ -1803,3 +1803,69 @@
     animation: none;
   }
 }
+.pairingPanel {
+  margin-top: 26px;
+  padding-top: 22px;
+  border-top: 1px dashed var(--line);
+}
+.pairingIntro {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+.pairingIntro p {
+  margin: 6px 0 0;
+  max-width: 520px;
+  color: var(--muted);
+  font-size: 11px;
+}
+.pairingCode {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-top: 18px;
+}
+.pairingCode img {
+  flex: 0 0 auto;
+  border-radius: 6px;
+  background: #fff;
+}
+.pairingCode b {
+  font-size: 13px;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+.pairingCode p {
+  margin: 8px 0 0;
+  font-size: 11px;
+  max-width: 360px;
+}
+.pairText {
+  margin: 0 0 18px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.pairText.muted {
+  margin-top: 16px;
+  font-size: 10px;
+}
+.pairPage a.primaryButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 42px;
+  font-weight: 600;
+  text-decoration: none;
+}
+@media (max-width: 720px) {
+  .pairingIntro,
+  .pairingCode {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .pairingCode img {
+    align-self: center;
+  }
+}

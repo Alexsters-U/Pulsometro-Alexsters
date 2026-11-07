@@ -107,7 +107,7 @@ test("streams live BPM, expiration and persisted design changes to an independen
 test("serves only the SPA and its assets; removes the old sender", async () => {
   const app = await fixture();
   try {
-    for (const path of ["/", "/overlay"]) {
+    for (const path of ["/", "/overlay", "/pair"]) {
       const response = await fetch(`${app.base}${path}`);
       assert.equal(response.status, 200);
       assert.ok((await response.text()).includes('<div id="root">'));
@@ -119,6 +119,81 @@ test("serves only the SPA and its assets; removes the old sender", async () => {
     const asset = html.match(/src="([^"]+\.js)"/)![1];
     assert.equal((await fetch(app.base + asset)).status, 200);
   } finally { await app.dispose(); }
+});
+
+async function openStream(url: string, controller: AbortController, headers: Record<string, string> = {}) {
+  const response = await fetch(url, { signal: controller.signal, headers });
+  assert.equal(response.status, 200);
+  const reader = response.body!.getReader();
+  let buffer = "";
+  return async function next(predicate: (value: string) => boolean) {
+    const timeout = setTimeout(() => controller.abort(), 4000);
+    try {
+      while (true) {
+        const { value, done } = await reader.read();
+        assert.equal(done, false);
+        buffer += new TextDecoder().decode(value);
+        if (predicate(buffer)) { const result = buffer; buffer = ""; return result; }
+      }
+    } finally { clearTimeout(timeout); }
+  };
+}
+
+test("a one-time pairing code hands INGEST_TOKEN to the app and notifies the editor", async () => {
+  const app = await fixture();
+  const controller = new AbortController();
+  const pair = (body: unknown) => fetch(`${app.base}/api/pair`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  try {
+    assert.equal((await fetch(`${app.base}/api/pairing`, { method: "POST" })).status, 401);
+    assert.equal((await pair({ code: "x".repeat(32) })).status, 401);
+    const cookie = await app.login();
+    const editor = await openStream(`${app.base}/api/events`, controller, { Cookie: cookie });
+    await editor((value) => value.includes("event: viewers"));
+    const created = await fetch(`${app.base}/api/pairing`, { method: "POST", headers: { Cookie: cookie } });
+    assert.equal(created.status, 200);
+    const { code, link, expiresAt } = await created.json();
+    assert.match(code, /^[A-Za-z0-9_-]{32}$/);
+    assert.equal(link, `${app.config.publicOrigin}/pair#code=${code}`);
+    assert.ok(Date.parse(expiresAt) > Date.now());
+    assert.equal((await pair({ code: code.slice(1) + "A" })).status, 401);
+    const accepted = await pair({ code, device: "Xiaomi" });
+    assert.equal(accepted.status, 200);
+    assert.deepEqual(await accepted.json(), { origin: app.config.publicOrigin, ingestToken: secrets.ingestToken });
+    await editor((value) => value.includes('"status":"completed"') && value.includes('"device":"Xiaomi"'));
+    assert.equal((await pair({ code })).status, 401, "the code is single use");
+    const second = await (await fetch(`${app.base}/api/pairing`, { method: "POST", headers: { Cookie: cookie } })).json();
+    assert.equal((await fetch(`${app.base}/api/pairing`, { method: "DELETE", headers: { Cookie: cookie } })).status, 200);
+    assert.equal((await pair({ code: second.code })).status, 401, "a cancelled code no longer works");
+  } finally { controller.abort(); await app.dispose(); }
+});
+
+test("the sender learns whether OBS is listening and the editor sees band battery", async () => {
+  const app = await fixture();
+  const overlayController = new AbortController();
+  const headers = { Authorization: `Bearer ${secrets.ingestToken}`, "Content-Type": "application/json" };
+  const sendPulse = async (body: unknown) => {
+    const response = await fetch(`${app.base}/api/pulse`, { method: "POST", headers, body: JSON.stringify(body) });
+    assert.equal(response.status, 200);
+    return (await response.json()).viewers;
+  };
+  try {
+    assert.deepEqual(await sendPulse({ bpm: 90, device: "KYOTO", battery: 81 }), { overlays: 0, obs: 0, live: 0, streaming: null, editors: 0 });
+    const overlay = await openStream(`${app.base}/api/events?token=${secrets.overlayToken}&client=obs`, overlayController);
+    const hello = await overlay((value) => value.includes("event: hello") && value.includes('"battery":81'));
+    const id = JSON.parse(hello.split("event: hello\ndata: ")[1].split("\n")[0]).id;
+    assert.deepEqual(await sendPulse({ bpm: 91, device: "KYOTO" }), { overlays: 1, obs: 1, live: 0, streaming: null, editors: 0 });
+    const presence = (body: unknown, token = secrets.overlayToken) => fetch(`${app.base}/api/presence?token=${token}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+    assert.equal((await presence({ id, active: true }, secrets.ingestToken)).status, 401);
+    assert.equal((await presence({ id: "unknown", active: true })).status, 404);
+    assert.equal((await presence({ id, active: true, streaming: true })).status, 200);
+    const viewers = await sendPulse({ bpm: 92, device: "KYOTO" });
+    assert.deepEqual(viewers, { overlays: 1, obs: 1, live: 1, streaming: true, editors: 0 });
+    const pulse = await (await fetch(`${app.base}/api/pulse?token=${secrets.overlayToken}`)).json();
+    assert.equal(pulse.battery, 81, "battery is kept while the same band omits it");
+    overlayController.abort();
+    await new Promise((resolveWait) => setTimeout(resolveWait, 200));
+    assert.equal((await sendPulse({ bpm: 93, device: "KYOTO" })).overlays, 0);
+  } finally { overlayController.abort(); await app.dispose(); }
 });
 
 test("production refuses missing, reused or insecure configuration", () => {
